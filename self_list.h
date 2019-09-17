@@ -17,9 +17,7 @@ class SelfList {
         int nodes;
 
     public:
-        SelfList() : head(nullptr),tail(nullptr),nodes(0){
-            this->method = Transpose;
-        };
+        SelfList(Method method) : head(nullptr),tail(nullptr),method(method),nodes(0){};
 
         bool insert(T data) {
             Node<T>* temp = new Node<T>(data);
