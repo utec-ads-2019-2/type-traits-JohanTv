@@ -12,37 +12,149 @@ class SelfList {
 
     protected:
         Node<T>* head;
+        Node<T>* tail;
         Method method;
+        int nodes;
 
     public:
-        SelfList(Method method) : head(nullptr) {};
+        SelfList() : head(nullptr),tail(nullptr),nodes(0){
+            this->method = Transpose;
+        };
 
         bool insert(T data) {
-            // TODO
+            Node<T>* temp = new Node<T>(data);
+            if(nodes == 0){
+                this->head = temp;
+                this->tail = temp;
+            }
+            else{
+                this->tail->next = temp;
+                this->tail = temp;
+            }
+            (this->nodes)++;
         }
-             
+
+        bool inList(T data, Node<T> **&pointer){
+            while((*pointer) != nullptr){
+
+                if ((*pointer)->data == data){
+                    return true;
+                }
+                pointer = &((*pointer)->next);
+            }
+            return false;
+        }
+
         bool remove(T data) {
-            // TODO
-        }  
+            Node<T>** tempA = &(this->head);
+            bool check = inList(data,tempA);
+
+            if (check){
+                Node<T>* tempB = (*tempA)->next;
+
+                if (*tempA == this->tail) {
+                    int size = this->nodes-2;
+                    Node<T>* prev = this->head;
+
+                    while(size>0){
+                        prev = prev->next;
+                    }
+
+                    this->tail = prev;
+                }
+
+                delete (*tempA);
+                (*tempA) = tempB;
+
+                (this->nodes)--;
+
+                return true;
+            }
+
+            else return false;
+
+        }
 
         bool find(T data) {
-            // TODO
+
+            Node<T>** tempA = &(this->head);
+            bool check = inList(data,tempA);
+            if (check){
+                switch(this->method){
+                    case Move: {
+                        Node<T>* tempB = this->head;
+                        if(*tempA != this->head) {
+                            while (tempB->next != *tempA) {
+                                tempB = tempB->next;
+                            }
+                            std::swap(tempB->data, (*tempA)->data);
+                        }
+                        break;
+                    }
+                    case Count: {
+                        (*tempA)->count++;
+                        if(*tempA != this->head) sortCount(tempA);
+                        break;
+                    }
+                    case Transpose: {
+                        if(*tempA != this->head) std::swap(this->head->data,(*tempA)->data);
+                        break;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+
+
+        void sortCount(Node<T> **&pointer){
+            Node<T>* temp = this->head;
+            bool sort = false;
+            while( !sort ){
+                if ((*pointer)->count >= temp->count ){
+                    std::swap((*pointer)->data, temp->data);
+                    std::swap((*pointer)->count, temp->count);
+                    break;
+                }
+                temp = temp->next;
+            }
         }
 
         T operator [] (int index) {
-            // TODO
+            if(0 <= index && index < (this->nodes)) {
+                Node<T>* temp = this->head;
+                while (index--){
+                    temp = temp->next;
+                }
+                return temp->data;
+            }
+            else return -1;
         }
              
         int size() {
-            // TODO
+            return this->nodes;
         }
 
         void print() {
-            // TODO
+            int length = this->nodes;
+            Node<T>* temp = this->head;
+            while(length != 0){
+                std::cout<<temp->data<<std::endl;
+                temp = temp->next;
+                length--;
+            }
         }
+        void clear() {
+            this->tail = nullptr;
 
+            this->head->killSelf();
+            this->head = nullptr;
+
+            this->nodes = 0;
+        }
         ~SelfList() {
-            // TODO
+            if(nodes!=0) clear();
         }  
 };
 
