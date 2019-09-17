@@ -50,6 +50,7 @@ class SelfList {
             if (check){
                 Node<T>* tempB = (*tempA)->next;
 
+                //update tail
                 if (*tempA == this->tail) {
                     int size = this->nodes-2;
                     Node<T>* prev = this->head;
@@ -69,7 +70,7 @@ class SelfList {
                 return true;
             }
 
-            else return false;
+            return false;
 
         }
 
@@ -80,11 +81,13 @@ class SelfList {
             if (check){
                 switch(this->method){
                     case Move: {
-                        Node<T>* tempB = this->head;
                         if(*tempA != this->head) {
+
+                            Node<T>* tempB = this->head;
                             while (tempB->next != *tempA) {
                                 tempB = tempB->next;
                             }
+                            
                             std::swap(tempB->data, (*tempA)->data);
                         }
                         break;
