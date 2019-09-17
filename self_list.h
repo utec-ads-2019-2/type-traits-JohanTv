@@ -104,8 +104,6 @@ class SelfList {
             return false;
         }
 
-
-
         void sortCount(Node<T> **&pointer){
             Node<T>* temp = this->head;
             bool sort = false;
@@ -138,10 +136,11 @@ class SelfList {
             int length = this->nodes;
             Node<T>* temp = this->head;
             while(length != 0){
-                std::cout<<temp->data<<std::endl;
+                std::cout<<temp->data<<" ";
                 temp = temp->next;
                 length--;
             }
+            std::cout<<"\n";
         }
         void clear() {
             this->tail = nullptr;
