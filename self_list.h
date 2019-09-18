@@ -82,13 +82,10 @@ class SelfList {
                 switch(this->method){
                     case Move: {
                         if(*tempA != this->head) {
-
-                            Node<T>* tempB = this->head;
-                            while (tempB->next != *tempA) {
-                                tempB = tempB->next;
-                            }
-                            
-                            std::swap(tempB->data, (*tempA)->data);
+                            Node<T>* tempB = (*tempA)->next;
+                            (*tempA)->next = this->head;
+                            this->head = (*tempA);
+                            *tempA = tempB;
                         }
                         break;
                     }
@@ -98,7 +95,16 @@ class SelfList {
                         break;
                     }
                     case Transpose: {
-                        if(*tempA != this->head) std::swap(this->head->data,(*tempA)->data);
+                        if(*tempA != this->head) {
+
+                            Node<T>* tempB = this->head;
+                            while (tempB->next != *tempA) {
+                                tempB = tempB->next;
+                            }
+
+                            std::swap(tempB->data, (*tempA)->data);
+                        }
+
                         break;
                     }
                 }
@@ -111,7 +117,7 @@ class SelfList {
             Node<T>* temp = this->head;
             bool sort = false;
             while( !sort ){
-                if ((*pointer)->count >= temp->count ){
+                if ((*pointer)->count > temp->count ){
                     std::swap((*pointer)->data, temp->data);
                     std::swap((*pointer)->count, temp->count);
                     break;
