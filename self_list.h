@@ -57,6 +57,7 @@ class SelfList {
 
                     while(size>0){
                         prev = prev->next;
+                        size--;
                     }
 
                     this->tail = prev;
